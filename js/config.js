@@ -293,7 +293,7 @@ dojo.declare("js.config", null, {
             FieldName: "${PARCELID}",
             DataType: "string",
             isLink: true,
-            href: "Photo.htm?ParcelId=${PARCELID}&SiteAddress=${SITEADDRESS}"
+            href: "Photo.aspx?ParcelId=${PARCELID}&SiteAddress=${SITEADDRESS}"
         }, {
             DisplayText: "Sub or Condo:",
             FieldName: "${CNVYNAME}",

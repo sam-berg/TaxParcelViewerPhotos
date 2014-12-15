@@ -402,6 +402,11 @@ function QueryParcel(layer, parcelId, mapPoint, objectId) {
                         dojo.byId("tdList").style.display = "none";
                         AddParcelToMap(results.features[0], mapPoint);
                         PopulateParcelInformation(mapPoint, results.features[0], results.features.length, results.features[0].geometry);
+
+
+                      //sb photo work
+                        queryPhotos();
+
                     }
                     else {
                         AddParcelToMap(results.features[0], mapPoint);
@@ -463,6 +468,50 @@ function QueryParcel(layer, parcelId, mapPoint, objectId) {
         });
     }
 }
+
+function renderPhotos(items) {
+  var carouselHTML = "";
+
+ 
+    for (var j = 0; j < items.length; j++) {
+    //var pinCssClass = MapTourHelper.getSymbolCss(slide.attributes.getColor());
+      var pinCssClass = 'pinCssClass';
+
+    // Numbering is done through CSS (require IE8+)
+    // The first div is necessary for vertical centering and the span around the image for the numbering
+    // The color specification though class is not ideal, but to have that more dynamic all the rest is a pain
+      var photo = items[j];
+      carouselHTML += '<li>';
+
+    carouselHTML += ' <div class="carousel-item-div">';
+    carouselHTML += '  <span class="' + pinCssClass + '"><img height="100" src="' + photo.url  + '" /></span>';
+    carouselHTML += '  <div>' + '<div>' + photo.name + '</div>' + '</div>';
+    carouselHTML += ' </div>';
+    carouselHTML += '</li>';
+    };
+
+  return carouselHTML;
+}
+function queryPhotos() {
+  dojo.xhrGet({
+    url: "photo2.aspx",
+    handleAs: "json",
+    preventCache: true,
+    load: function (responseObject, ioArgs) {
+
+      var ro = responseObject;
+   
+      var h = renderPhotos(ro.photos);
+
+      //$(selector + ' .carouselScroller ul').html(renderItem(slides));
+      var cs = dojo.byId("carouselScroller");
+      cs.innerHTML ="<ul>" + h + "</ul>";
+
+      dojo.style(dojo.byId('footer'), "display", "block");
+    }
+  });
+}
+
 
 //Plotting parcel on map
 function AddParcelToMap(feature, mapPoint) {
